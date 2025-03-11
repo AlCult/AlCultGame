@@ -1,4 +1,4 @@
-import express from "express";  // ❗️ Объявляем только ОДИН раз
+import express from "express";
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import { Telegraf } from "telegraf";
@@ -12,7 +12,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const app = express();
 const PORT = 3000;
 
-// Подключаем базу данных
+// База данных
 const adapter = new JSONFile("db.json");
 const defaultData = { articles: {} };
 const db = new Low(adapter, defaultData);
@@ -35,24 +35,22 @@ app.get("/articles/:id", async (req, res) => {
     res.json({ id: req.params.id, text: article });
 });
 
-// Запуск API-сервера
-app.listen(PORT, () => console.log(`🚀 API запущен на http://localhost:${PORT}`));
-
 // 📌 Подключаем WebApp
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
-// 📌 Команда для открытия WebApp
+// 📌 Команда /open для запуска WebApp
 bot.command("open", (ctx) => {
     ctx.reply("🔗 Открыть Вики:", {
         reply_markup: {
-            inline_keyboard: [[{ text: "📖 Открыть", web_app: { url: "http://localhost:3000" } }]],
+            inline_keyboard: [[{ text: "📖 Открыть", web_app: { url: process.env.WEB_APP_URL } }]],
         },
     });
 });
 
-// 📌 Запускаем бота
+// Запускаем API и бота
+app.listen(PORT, () => console.log(`🚀 API запущен на http://localhost:${PORT}`));
 bot.launch();
 console.log("🤖 Бот запущен!");
 

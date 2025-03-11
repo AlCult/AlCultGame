@@ -3,43 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Телеграм Вики</title>
+    <title>Telegram Вики</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        .article { border: 1px solid #ddd; padding: 10px; margin: 10px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>📖 Список статей</h1>
     <div id="articles">Загрузка...</div>
-
-    <script>
-        const API_URL = "http://localhost:3000/articles";
-
-        async function loadArticles() {
-            const response = await fetch(API_URL);
-            const articles = await response.json();
-            const container = document.getElementById("articles");
-            container.innerHTML = "";
-
-            Object.keys(articles).forEach(id => {
-                const div = document.createElement("div");
-                div.className = "article";
-                div.innerText = `📌 ${id}: ${articles[id].slice(0, 30)}...`;
-                div.onclick = () => showArticle(id);
-                container.appendChild(div);
-            });
-        }
-
-        async function showArticle(id) {
-            const response = await fetch(`${API_URL}/${id}`);
-            const article = await response.json();
-            alert(`📖 ${article.id}:\n\n${article.text}`);
-        }
-
-        Telegram.WebApp.expand(); // Расширяем WebApp на весь экран
-        loadArticles();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
