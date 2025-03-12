@@ -1,19 +1,4 @@
-const API_URL = "https://alcult-alcultgame-01cc.twc1.net/articles";  // Обнови на свой сервер
-
-async function loadArticles() {
-    const response = await fetch(API_URL);
-    const articles = await response.json();
-    const container = document.getElementById("articles");
-    container.innerHTML = "";
-
-    Object.keys(articles).forEach(id => {
-        const div = document.createElement("div");
-        div.className = "article";
-        div.innerText = `📌 ${id}: ${articles[id].slice(0, 30)}...`;
-        div.onclick = () => showArticle(id);
-        container.appendChild(div);
-    });
-}
+const API_URL = "https://alcult-alcultgame-01cc.twc1.net/articles"; // Замените на свой URL
 
 // Функция показа статьи
 async function showArticle(id) {
@@ -43,5 +28,39 @@ function closeDialog() {
     document.getElementById("articleDialog").close();
 }
 
-Telegram.WebApp.expand();
-loadArticles();
+// Функция добавления статьи
+async function addArticle() {
+    const title = document.getElementById("articleTitle").value.trim();
+    const text = document.getElementById("articleText").value.trim();
+
+    if (!title || !text) {
+        openDialog("⚠ Ошибка", "Заполните все поля!");
+        return;
+    }
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, text })
+        });
+
+        if (!response.ok) throw new Error(`Ошибка ${response.status}`);
+        
+        const newArticle = await response.json();
+        openDialog("✅ Успех", `Статья добавлена (ID: ${newArticle.id})!`);
+        document.getElementById("addArticleDialog").close(); // Закрываем окно после успеха
+    } catch (error) {
+        openDialog("❌ Ошибка", `Не удалось добавить статью: ${error.message}`);
+    }
+}
+
+// Функция открытия формы добавления статьи
+function openAddArticleDialog() {
+    document.getElementById("addArticleDialog").showModal();
+}
+
+// Функция закрытия формы добавления статьи
+function closeAddArticleDialog() {
+    document.getElementById("addArticleDialog").close();
+}

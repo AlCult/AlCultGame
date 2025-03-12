@@ -11,10 +11,25 @@
     <h1>📖 Список статей</h1>
     <div id="articles">Загрузка...</div>
     <script src="script.js"></script>
-    <dialog id="articleDialog">
-        <h2 id="dialogTitle"></h2>
-        <p id="dialogContent"></p>
-        <button onclick="closeDialog()">Закрыть</button>
-    </dialog>
+
+<!-- Диалоговое окно для показа статьи -->
+<dialog id="articleDialog">
+    <h2 id="dialogTitle"></h2>
+    <p id="dialogContent"></p>
+    <button onclick="closeDialog()">Закрыть</button>
+</dialog>
+
+<!-- Диалоговое окно для добавления статьи -->
+<dialog id="addArticleDialog">
+    <h2>Добавить статью</h2>
+    <input type="text" id="articleTitle" placeholder="Название статьи" /><br><br>
+    <textarea id="articleText" placeholder="Текст статьи"></textarea><br><br>
+    <button onclick="addArticle()">Добавить</button>
+    <button onclick="closeAddArticleDialog()">Отмена</button>
+</dialog>
+
+<!-- Кнопка для вызова формы добавления статьи -->
+<button onclick="openAddArticleDialog()">➕ Добавить статью</button>
+
 </body>
 </html>
