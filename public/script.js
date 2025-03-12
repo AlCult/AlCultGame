@@ -15,10 +15,32 @@ async function loadArticles() {
     });
 }
 
+// Функция показа статьи
 async function showArticle(id) {
-    const response = await fetch(`${API_URL}/${id}`);
-    const article = await response.json();
-    alert(`📖 ${article.id}:\n\n${article.text}`);
+    try {
+        const response = await fetch(`${API_URL}/${id}`);
+        if (!response.ok) throw new Error(`Ошибка ${response.status}`);
+
+        const article = await response.json();
+        if (!article.id || !article.text) throw new Error("Неверный формат данных");
+
+        openDialog(`📖 ${article.id}`, article.text);
+    } catch (error) {
+        openDialog("❌ Ошибка", `Не удалось загрузить статью: ${error.message}`);
+    }
+}
+
+// Функция показа диалогового окна
+function openDialog(title, content) {
+    const dialog = document.getElementById("articleDialog");
+    document.getElementById("dialogTitle").textContent = title;
+    document.getElementById("dialogContent").textContent = content;
+    dialog.showModal();
+}
+
+// Функция закрытия диалога
+function closeDialog() {
+    document.getElementById("articleDialog").close();
 }
 
 Telegram.WebApp.expand();
