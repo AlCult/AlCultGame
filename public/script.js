@@ -1,4 +1,4 @@
-const API_URL = "https://my-wiki-bot.ru/articles";  // Обнови на свой сервер
+const API_URL = "https://alcult-alcultgame-01cc.twc1.net/articles";  // Обнови на свой сервер
 
 async function loadArticles() {
     const response = await fetch(API_URL);
