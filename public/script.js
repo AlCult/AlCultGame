@@ -1,4 +1,4 @@
-const API_URL = "https://alcult-alcultgame-01cc.twc1.net/articles"; // Замените на свой URL
+const API_URL = "http://localhost:3000"; // Замените на свой URL
 
 // Функция показа статьи
 async function showArticle(id) {
