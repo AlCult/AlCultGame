@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000"; // Замените на свой URL
+const API_URL = "https://alcult-alcultgame-01cc.twc1.net/articles"; // Замените на свой URL
 
 // Функция показа статьи
 async function showArticle(id) {
@@ -32,7 +32,6 @@ function closeDialog() {
 async function addArticle() {
     const title = document.getElementById("articleTitle").value.trim();
     const text = document.getElementById("articleText").value.trim();
-
     
 
     if (!title || !text) {
@@ -41,18 +40,20 @@ async function addArticle() {
     }
 
     try {
-        alert ("Мы пришли");
+        alert ("мы пришли")
         const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, text })
         });
-        alert ("данные собрали");
+
+        alert ("Прошли регу")
+
         if (!response.ok) throw new Error(`Ошибка ${response.status}`);
-        alert ("Прошли IF");
-        const newArticle = await response.json();
-        alert (newArticle);
         
+        alert ("мы Ошибку")
+        const newArticle = await response.json();
+        alert (newArticle)
         openDialog("✅ Успех", `Статья добавлена (ID: ${newArticle.id})!`);
         document.getElementById("addArticleDialog").close(); // Закрываем окно после успеха
     } catch (error) {
