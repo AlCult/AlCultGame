@@ -35,6 +35,29 @@ app.get("/articles/:id", async (req, res) => {
     res.json({ id: req.params.id, text: article });
 });
 
+// 📌 API: Добавление новой заметки
+app.post("/notes", async (req, res) => {
+    await db.read();
+    db.data.notes ||= []; // Если массив не существует, создаём его
+
+    const { title, text } = req.body;
+    if (!title || !text) {
+        return res.status(400).json({ error: "Заголовок и текст заметки обязательны" });
+    }
+
+    const newNote = {
+        id: Date.now().toString(), // Генерируем уникальный ID
+        title,
+        text,
+        createdAt: new Date().toISOString()
+    };
+
+    db.data.notes.push(newNote);
+    await db.write();
+
+    res.status(201).json({ message: "Заметка сохранена", note: newNote });
+});
+
 // 📌 Подключаем WebApp
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
