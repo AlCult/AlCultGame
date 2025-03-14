@@ -33,21 +33,26 @@ async function addArticle() {
     const title = document.getElementById("articleTitle").value.trim();
     const text = document.getElementById("articleText").value.trim();
 
+    
+
     if (!title || !text) {
         openDialog("⚠ Ошибка", "Заполните все поля!");
         return;
     }
 
     try {
+        alert ("Мы пришли");
         const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, text })
         });
-
+        alert ("данные собрали");
         if (!response.ok) throw new Error(`Ошибка ${response.status}`);
-        
+        alert ("Прошли IF");
         const newArticle = await response.json();
+        alert (newArticle);
+        
         openDialog("✅ Успех", `Статья добавлена (ID: ${newArticle.id})!`);
         document.getElementById("addArticleDialog").close(); // Закрываем окно после успеха
     } catch (error) {
